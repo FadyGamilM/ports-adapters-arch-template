@@ -1,0 +1,17 @@
+// this file contains the schema of our structured data
+syntax = "proto3";
+
+package pb;
+
+// the "./pb" is the directory name that we want our generated code to be placed into
+option go_package = "./pb";
+
+// the request
+message Transaction {
+    float amount = 1;
+}
+
+// the response after performing the operation
+message CurrentBalance {
+    float balance = 1;
+}
