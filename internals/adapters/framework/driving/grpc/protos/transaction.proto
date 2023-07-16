@@ -1,0 +1,36 @@
+// this file contains the schema of our structured data
+syntax = "proto3";
+
+// package name is pb which protobuf
+package pb;
+
+// the "./pb" is the directory name that we want our generated code to be placed into
+// when we use the protoc to generate the go code, we need to generate this code into a package to import it inside other parts of the app 
+// this go_package option is relative to the output directory we use in the protoc command , so we don't have to specify the entire path here 
+option go_package = "./pb";
+
+// the request
+message Transaction {
+    float amount = 1;
+}
+
+// the response after performing the operation
+message CurrentBalance {
+    float balance = 1;
+}
+
+
+service TransactionService {
+    rpc Deposite(Transaction) returns (CurrentBalance) {}
+    rpc Withdraw(Transaction) returns (CurrentBalance) {}
+}
+
+
+// to generate code for the services 
+// >> protoc --go-grpc_out=internals\adapters\framework\driving\grpc --proto_path=internals\adapters\framework\driving\grpc\proto\ internals\adapters\framework\driving\grpc\proto\transaction_srvc.proto
+
+// to generate code for the messages 
+// >> protoc --go_out=internals\adapters\framework\driving\grpc --proto_path=internals\adapters\framework\driving\grpc\protos .\internals\adapters\framework\driving\grpc\protos\transaction.proto
+
+// create a folder named pb inside the protos folder first 
+// protoc -I .\internals\adapters\framework\driving\grpc\protos .\internals\adapters\framework\driving\grpc\protos\transaction.proto --go_out=.\internals\adapters\framework\driving\grpc\protos --go_opt=paths=source_relative --go-grpc_out=.\internals\adapters\framework\driving\grpc\protos --go-grpc_opt=paths=source_relative
